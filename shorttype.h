@@ -16,10 +16,6 @@
 #define i32 int32_t
 #define i64 int64_t
 
-int clampi(int in, int min, int max);
-float clampf(float in, float min, float max);
-
-
 typedef struct {
 	float x, y;
 } v2;
@@ -33,10 +29,6 @@ typedef struct {
 typedef struct {
 	int x, y, z;
 } v3i;
-
-v2 normalize(v2 v);
-
-
 
 
 #ifdef SHORTTYPES
@@ -65,28 +57,36 @@ v2 v2_rot(v2 v, float a) {
 	float ca = cos(a);
 	return (v2) {
 		v.x * ca - v.y * sa,
-		v.x * sin + v.y * ca
+		v.x * sa + v.y * ca
 	};
 }
 
-v2 v3_norm(v2 v) {
+v3 v3_norm(v3 v) {
 	float h = (v.x > v.y) ? v.x : v.y;
 	if (h < v.z) h = v.z;
-	return (v2) {
+	return (v3) {
 		v.x/h,
 		v.y/h,
 		v.z/h
 	};
 }
 
-v2 v2_rot(v2 v, float a) {
-	float sa = sin(a);
-	float ca = cos(a);
-	return (v2) {
-		v.x * ca - v.y * sa,
-		v.x * sin + v.y * ca
-	};
-}
+// v2 v2_rot(v2 v, float a) {
+	// float sa = sin(a);
+	// float ca = cos(a);
+	// return (v2) {
+		// v.x * ca - v.y * sa,
+		// v.x * sin + v.y * ca
+	// };
+// }
+#else
+int clampi(int in, int min, int max);
+float clampf(float in, float min, float max);
+
+v2 v2_norm(v2 v);
+v2 v2_rot(v2 v, float a);
+v3 v3_norm(v3 v);
+
 #endif
 
 #endif
