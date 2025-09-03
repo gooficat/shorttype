@@ -1,3 +1,10 @@
+/*
+This is a library designed to help you write programs in c, using concise syntax and some abstractions and utility
+contributions welcome.
+
+please credit if any of this code is used
+by Hasan Sabri, DO NOT REMOVE CREDIT
+*/
 #ifndef SHORTTYPE_H
 #define SHORTTYPE_H
 
@@ -15,6 +22,9 @@
 #define i16 int16_t
 #define i32 int32_t
 #define i64 int64_t
+
+#define f32 float
+#define f64 double
 
 typedef struct {
 	float x, y;
