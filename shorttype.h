@@ -1,5 +1,5 @@
-#ifndef SHORTTYPES_H
-#define SHORTTYPES_H
+#ifndef SHORTTYPE_H
+#define SHORTTYPE_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -18,20 +18,20 @@
 
 typedef struct {
 	float x, y;
-} v2;
+} vec2_t;
 typedef struct {
 	int x, y;
-} v2i;
+} vec2i_t;
 
 typedef struct {
 	float x, y, z;
-} v3;
+} vec3_t;
 typedef struct {
 	int x, y, z;
-} v3i;
+} vec3i_t;
 
 
-#ifdef SHORTTYPES
+#ifdef SHORTTYPE
 int clampi(int in, int min, int max) {
 	if (in > max) return max;
 	if (in < min) return min;
@@ -44,37 +44,41 @@ float clampf(float in, float min, float max) {
 }
 
 
-v2 v2_norm(v2 v) {
+vec2_t vec2_t_norm(vec2_t v) {
 	float h = (v.x > v.y) ? v.x : v.y;
-	return (v2) {
+	return (vec2_t) {
 		v.x/h,
 		v.y/h
 	};
 }
 
-v2 v2_rot(v2 v, float a) {
+vec2_t vec2_t_rot(vec2_t v, float a) {
 	float sa = sin(a);
 	float ca = cos(a);
-	return (v2) {
+	return (vec2_t) {
 		v.x * ca - v.y * sa,
 		v.x * sa + v.y * ca
 	};
 }
 
-v3 v3_norm(v3 v) {
-	float h = (v.x > v.y) ? v.x : v.y;
-	if (h < v.z) h = v.z;
-	return (v3) {
-		v.x/h,
-		v.y/h,
-		v.z/h
-	};
+float lerpf(float in, float target, float factor) {
+	return in * (1.0f - factor) + (target * factor);
 }
 
-// v2 v2_rot(v2 v, float a) {
+// vec3_t vec3_t_norm(vec3_t v) {
+	// float h = (v.x > v.y) ? v.x : v.y;
+	// if (h < v.z) h = v.z;
+	// return (vec3_t) {
+		// v.x/h,
+		// v.y/h,
+		// v.z/h
+	// };
+// }
+
+// vec2_t vec2_t_rot(vec2_t v, float a) {
 	// float sa = sin(a);
 	// float ca = cos(a);
-	// return (v2) {
+	// return (vec2_t) {
 		// v.x * ca - v.y * sa,
 		// v.x * sin + v.y * ca
 	// };
@@ -82,10 +86,11 @@ v3 v3_norm(v3 v) {
 #else
 int clampi(int in, int min, int max);
 float clampf(float in, float min, float max);
+float lerpf(float in, float target, float factor);
 
-v2 v2_norm(v2 v);
-v2 v2_rot(v2 v, float a);
-v3 v3_norm(v3 v);
+vec2_t vec2_t_norm(vec2_t v);
+vec2_t vec2_t_rot(vec2_t v, float a);
+vec3_t vec3_t_norm(vec3_t v);
 
 #endif
 
