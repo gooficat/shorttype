@@ -26,8 +26,14 @@ by Hasan Sabri, DO NOT REMOVE CREDIT
 #define f32 float
 #define f64 double
 
+#define ch char
+#define bo bool
+
+#define con const
+#define sta static
+
 typedef struct {
-	float x, y;
+	double x, y;
 } v2;
 typedef struct {
 	int x, y;
@@ -56,6 +62,7 @@ float clampf(float in, float min, float max) {
 
 v2 v2_norm(v2 v) {
 	float h = (v.x > v.y) ? v.x : v.y;
+	if (!h) h = 0.00000001;
 	return (v2) {
 		v.x/h,
 		v.y/h
