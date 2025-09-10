@@ -40,7 +40,7 @@ typedef struct {
 } v2i;
 
 typedef struct {
-	float x, y, z;
+	double x, y, z;
 } v3;
 typedef struct {
 	int x, y, z;
@@ -61,7 +61,7 @@ float clampf(float in, float min, float max) {
 
 
 v2 v2_norm(v2 v) {
-	float h = (v.x > v.y) ? v.x : v.y;
+	double h = (v.x > v.y) ? v.x : v.y;
 	if (!h) h = 0.00000001;
 	return (v2) {
 		v.x/h,
@@ -70,12 +70,18 @@ v2 v2_norm(v2 v) {
 }
 
 v2 v2_rot(v2 v, float a) {
-	float sa = sin(a);
-	float ca = cos(a);
+	double sa = sin(a);
+	double ca = cos(a);
 	return (v2) {
-		v.x * ca - v.y * sa,
-		v.x * sa + v.y * ca
+		 v.x * ca - v.y * sa,
+		-v.x * sa - v.y * ca
 	};
+}
+
+float v2_dis(v2 v) {
+	return sqrt(
+		(v.x * v.x) + (v.y * v.y)
+	);
 }
 
 float lerpf(float in, float target, float factor) {
@@ -91,15 +97,36 @@ float lerpf(float in, float target, float factor) {
 		// v.z/h
 	// };
 // }
-
-// v2 v2_rot(v2 v, float a) {
-	// float sa = sin(a);
-	// float ca = cos(a);
-	// return (v2) {
-		// v.x * ca - v.y * sa,
-		// v.x * sin + v.y * ca
-	// };
-// }
+/*v3 v3_rotx(v3 v, float a) {
+	float sa = sin(a);
+	float ca = cos(a);
+	
+	return (v3) {
+		v.x * ca - v.y * sa,
+		-v.x * sa - v.y * ca,
+		0
+	};
+}
+v3 v3_roty(v3 v, float a) {
+	float sa = sin(a);
+	float ca = cos(a);
+	
+	return (v3) {
+		v.x * ca - v.y * sa,
+		-v.x * sa - v.y * ca,
+		0
+	};
+}*/
+v3 v3_rotz(v3 v, float a) {
+	float sa = sin(a);
+	float ca = cos(a);
+	
+	return (v3) {
+		v.x * ca - v.y * sa,
+		-v.x * sa - v.y * ca,
+		0
+	};
+}
 #else
 int clampi(int in, int min, int max);
 float clampf(float in, float min, float max);
