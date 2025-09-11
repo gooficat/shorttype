@@ -79,7 +79,14 @@ v2 v2_rot(v2 v, float a) {
 		-v.x * sa - v.y * ca
 	};
 }
-
+v2i v2i_rot(v2i v, float a) {
+	double sa = sin(a);
+	double ca = cos(a);
+	return (v2i) {
+		 v.x * ca - v.y * sa,
+		-v.x * sa - v.y * ca
+	};
+}
 float v2_dis(v2 v) {
 	return sqrt(
 		(v.x * v.x) + (v.y * v.y)
@@ -136,7 +143,13 @@ float lerpf(float in, float target, float factor);
 
 v2 v2_norm(v2 v);
 v2 v2_rot(v2 v, float a);
+float v2_dis(v2 v);
 v3 v3_norm(v3 v);
+v3 v3_rotx(v3 v, float a);
+v3 v3_roty(v3 v, float a);
+v3 v3_rotz(v3 v, float a);
+v2i v2i_rot(v2i v, float a);
+
 
 #endif
 
