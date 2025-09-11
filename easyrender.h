@@ -4,7 +4,6 @@ It also abstracts the main function, I may add an option to not do this.
 contributions welcome.
 
 please credit if any of this code is used
-by Hasan Sabri, DO NOT REMOVE CREDIT
 */
 
 #ifndef EASYRENDER_H
@@ -45,39 +44,55 @@ void line(int x0, int y0, int x1, int y1, uint32_t c) {
 	float dy = y1 - y0;
 	
 	int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
-	
+	if (!steps) steps=1;
 	float xinc = dx / steps,
 		  yinc = dy / steps;
 	
 	float x = x0,
 		  y = y0;
-	
-	for (int i = 0; i <= steps; i++) {
+	for (int i = 0; i != steps; i+=1) {
 		pix(floor(x), floor(y), c);
 		x += xinc;
 		y += yinc;
 	}
 }
+void vline(int x, int t, int b, uint32_t c) {
+	int SWAPVAR;
+	if (b < t) {
+		SWAPVAR = t;
+		t = b;
+		b = SWAPVAR;
+	}
+	if (t > WIDTH-1) t = WIDTH-1;
+	if (b > WIDTH-1) b = WIDTH-1;
+	if (t < 0) t = 0;
+	if (b < 0) b = 0;
+	
+	for (int i = 0; i < b - t; i++) {
+		pix(x, t + i, c);
+	}
+}
+
 void clear() {
 	memset(pixels, CLEAR_COLOR, sizeof(uint32_t) * WIDTH * HEIGHT);
 }
-void init();
+void init(int argc, char** argv);
 void setup();
 
-void update(float deltaTime);
+void update(double deltaTime);
 void draw();
 
-int main() {
-	init();
+int main(int argc, char** argv) {
+	init(argc, argv);
 	SDL_Init(SDL_INIT_VIDEO);
 	window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
 	surface = SDL_GetWindowSurface(window);
 	pixels = (uint32_t*)surface->pixels;
 	bool quit = false;
 	SDL_Event e;
-	float frameTime = SDL_GetTicks();
-	float lastFrameTime;
-	float deltaTime;
+	double frameTime = SDL_GetTicks();
+	double lastFrameTime;
+	double deltaTime;
 	setup();
 	while (!quit) {
 		lastFrameTime = frameTime;
@@ -111,7 +126,8 @@ uint32_t rgb(uint8_t r, uint8_t g, uint8_t b);
 void pix(int x, int y, uint32_t c);
 void rect(int x, int y, int w, int h, uint32_t c);
 void line(int x0, int y0, int x1, int y1, uint32_t c);
-void clear(uint32_t c);
+void vline(int x, int t, int b, uint32_t c);
+void clear();
 #endif
 
 #endif
