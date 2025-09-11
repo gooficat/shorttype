@@ -8,9 +8,11 @@ by Hasan Sabri, DO NOT REMOVE CREDIT
 #ifndef SHORTTYPE_H
 #define SHORTTYPE_H
 
+#include <unistd.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <math.h>
 
 #define u8 uint8_t
