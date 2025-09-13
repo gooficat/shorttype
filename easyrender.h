@@ -56,17 +56,35 @@ void line(int x0, int y0, int x1, int y1, uint32_t c) {
 		y += yinc;
 	}
 }
-void vline(int x, int t, int b, uint32_t c) {
+
+void hline(int y, int l, int r, uint32_t c) {
 	int SWAPVAR;
+	if (r < l) {
+		SWAPVAR = r;
+		r = l;
+		l = SWAPVAR;
+	}
+	if (l > WIDTH-1) l = WIDTH-1;
+	if (r > WIDTH-1) r = WIDTH-1;
+	if (l < 0) l = 0;
+	if (r < 0) r = 0;
+	
+	for (int i = 0; i < r - l; i++) {
+		pix(l + i, y, c);
+	}
+}
+
+void vline(int x, int t, int b, uint32_t c) {
+	int SWAPVAR;/*
 	if (b < t) {
 		SWAPVAR = t;
 		t = b;
 		b = SWAPVAR;
-	}
-	if (t > WIDTH-1) t = WIDTH-1;
-	if (b > WIDTH-1) b = WIDTH-1;
+	}*/
+	if (t > HEIGHT-1) return;
+	if (b > HEIGHT-1) b = HEIGHT-1;
 	if (t < 0) t = 0;
-	if (b < 0) b = 0;
+	if (b < 0) return;
 	
 	for (int i = 0; i < b - t; i++) {
 		pix(x, t + i, c);
@@ -129,6 +147,7 @@ void pix(int x, int y, uint32_t c);
 void rect(int x, int y, int w, int h, uint32_t c);
 void line(int x0, int y0, int x1, int y1, uint32_t c);
 void vline(int x, int t, int b, uint32_t c);
+void hline(int y, int l, int r, uint32_t c);
 void clear();
 #endif
 
