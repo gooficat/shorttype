@@ -15,47 +15,52 @@ by Hasan Sabri, DO NOT REMOVE CREDIT
 #include <stdio.h>
 #include <math.h>
 
-#define u8 uint8_t
-#define u16 uint16_t
-#define u32 uint32_t
-#define u64 uint64_t
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
 
-#define i8 int8_t
-#define i16 int16_t
-#define i32 int32_t
-#define i64 int64_t
+typedef int8_t i8;
+typedef int16_t i16;
+typedef int32_t i32;
+typedef int64_t i64;
 
-#define f32 float
-#define f64 double
+typedef float f32;
+typedef double f64;
 
-#define ch char
-#define bo bool
+typedef char ch;
+typedef bool bo;
+
 
 #define con const
 #define sta static
+#define vd void
+
+#define tr true
+#define fa false
 
 typedef struct {
-	double x, y;
+	f32 x, y;
 } v2;
 typedef struct {
-	int x, y;
+	i32 x, y;
 } v2i;
 
 typedef struct {
-	double x, y, z;
+	f32 x, y, z;
 } v3;
 typedef struct {
-	int x, y, z;
+	i32 x, y, z;
 } v3i;
 
 
 #ifdef SHORTTYPE
-int clampi(int in, int min, int max) {
+i32 clampi(i32 in, i32 min, i32 max) {
 	if (in > max) return max;
 	if (in < min) return min;
 	return in;
 }
-double clampf(double in, double min, double max) {
+f32 clampf(f32 in, f32 min, f32 max) {
 	if (in > max) return max;
 	if (in < min) return min;
 	return in;
@@ -63,7 +68,7 @@ double clampf(double in, double min, double max) {
 
 
 v2 v2_norm(v2 v) {
-	double h = (v.x > v.y) ? v.x : v.y;
+	f32 h = (v.x > v.y) ? v.x : v.y;
 	if (!h) h = 0.00000001;
 	return (v2) {
 		v.x/h,
@@ -71,34 +76,50 @@ v2 v2_norm(v2 v) {
 	};
 }
 
-v2 v2_rot(v2 v, double a) {
-	double sa = sin(a);
-	double ca = cos(a);
+v2 v2_rot(v2 v, f32 a) {
+	f32 sa = sin(a);
+	f32 ca = cos(a);
 	return (v2) {
 		 v.x * ca - v.y * sa,
 		-v.x * sa - v.y * ca
 	};
 }
-v2i v2i_rot(v2i v, double a) {
-	double sa = sin(a);
-	double ca = cos(a);
+v2i v2i_rot(v2i v, f32 a) {
+	f32 sa = sin(a);
+	f32 ca = cos(a);
 	return (v2i) {
 		 v.x * ca - v.y * sa,
 		-v.x * sa - v.y * ca
 	};
 }
-double v2_dis(v2 v) {
+
+v2i v2i_v2(v2 v) {
+	return (v2i) {
+		(i32)v.x,
+		(i32)v.y
+	};
+}
+
+v2 v2_v2i(v2 v) {
+	return (v2) {
+		(f32)v.x,
+		(f32)v.y
+	};
+}
+
+f32 v2_dis(v2 v) {
 	return sqrt(
 		(v.x * v.x) + (v.y * v.y)
 	);
 }
 
-double lerpf(double in, double target, double factor) {
+
+f32 lerpf(f32 in, f32 target, f32 factor) {
 	return in * (1.0f - factor) + (target * factor);
 }
 
 // v3 v3_norm(v3 v) {
-	// double h = (v.x > v.y) ? v.x : v.y;
+	// f32 h = (v.x > v.y) ? v.x : v.y;
 	// if (h < v.z) h = v.z;
 	// return (v3) {
 		// v.x/h,
@@ -106,9 +127,9 @@ double lerpf(double in, double target, double factor) {
 		// v.z/h
 	// };
 // }
-/*v3 v3_rotx(v3 v, double a) {
-	double sa = sin(a);
-	double ca = cos(a);
+/*v3 v3_rotx(v3 v, f32 a) {
+	f32 sa = sin(a);
+	f32 ca = cos(a);
 	
 	return (v3) {
 		v.x * ca - v.y * sa,
@@ -116,9 +137,9 @@ double lerpf(double in, double target, double factor) {
 		0
 	};
 }
-v3 v3_roty(v3 v, double a) {
-	double sa = sin(a);
-	double ca = cos(a);
+v3 v3_roty(v3 v, f32 a) {
+	f32 sa = sin(a);
+	f32 ca = cos(a);
 	
 	return (v3) {
 		v.x * ca - v.y * sa,
@@ -126,29 +147,29 @@ v3 v3_roty(v3 v, double a) {
 		0
 	};
 }*/
-v3 v3_rotz(v3 v, double a) {
-	double sa = sin(a);
-	double ca = cos(a);
+v3 v3_rotz(v3 v, f32 a) {
+	f32 sa = sin(a);
+	f32 ca = cos(a);
 	
 	return (v3) {
-		v.x * ca - v.y * sa,
+		 v.x * ca - v.y * sa,
 		-v.x * sa - v.y * ca,
 		0
 	};
 }
 #else
-int clampi(int in, int min, int max);
-double clampf(double in, double min, double max);
-double lerpf(double in, double target, double factor);
+i32 clampi(i32 in, i32 min, i32 max);
+f32 clampf(f32 in, f32 min, f32 max);
+f32 lerpf(f32 in, f32 target, f32 factor);
 
 v2 v2_norm(v2 v);
-v2 v2_rot(v2 v, double a);
-double v2_dis(v2 v);
+v2 v2_rot(v2 v, f32 a);
+f32 v2_dis(v2 v);
 v3 v3_norm(v3 v);
-v3 v3_rotx(v3 v, double a);
-v3 v3_roty(v3 v, double a);
-v3 v3_rotz(v3 v, double a);
-v2i v2i_rot(v2i v, double a);
+v3 v3_rotx(v3 v, f32 a);
+v3 v3_roty(v3 v, f32 a);
+v3 v3_rotz(v3 v, f32 a);
+v2i v2i_rot(v2i v, f32 a);
 
 
 #endif
